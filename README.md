@@ -10,7 +10,7 @@ The #1 rule of oblichat is to never save any messages. The communication between
 Navigate to oblichat folder after the download and run `npm install`
 
 ## Usage
-Open your browser and navigate to http://localhost:8080
+Open your browser and navigate to `http://localhost:8080`
 
 ### License
 
@@ -25,4 +25,4 @@ Open your browser and navigate to http://localhost:8080
 
 ### Author
 
-Stavros Moiras ([vipersec](http://vipersec.com))
+Stavros Moiras ([vipersec.com](http://vipersec.com))

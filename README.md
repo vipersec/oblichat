@@ -23,7 +23,7 @@ Open your browser and navigate to `http://localhost:8080`
 
 ### Dependencies
 
-- Nodejs
+- Node.js
 - Socket.io
 - MongoDB
 - pjax

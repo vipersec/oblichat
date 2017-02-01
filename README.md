@@ -14,14 +14,14 @@ Open your browser and navigate to `http://localhost:8080`
 
 ### License
 
-`oblichat` is released under the MIT license.
+`Oblichat` is released under the MIT license.
 
 ### Dependencies
 
 - Nodejs
 - Socket.io
-- pjax
 - MongoDB
+- pjax
 
 ### Author
 

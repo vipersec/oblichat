@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta, title, CSS, favicons, etc. -->
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title><%= title %></title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <!-- Documentation extras -->
+    <link href="/css/docs.css" rel="stylesheet">
+    <link href="/css/pygments-manni.css" rel="stylesheet">
+
+    <link href='/css/animate.css' rel="stylesheet">
+    <link href='/css/nprogress.css' rel="stylesheet">
+
+    <link href="/css/materialicons.css" rel="stylesheet">
+
+    <link href="/css/main.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="/js/html5shiv.js"></script>
+    <script src="/js/respond.min.js"></script>
+    <![endif]-->
+
+    <script type="text/javascript" src="/js/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src='/js/nprogress.js'></script>
+    <script type="text/javascript" src="/js/jquery.pjax.js"></script>
+
+    <script type="text/javascript" src="/js/zxcvbn.js"></script>
+
+    <script type="text/javascript" src="/js/validator.js"></script>
+    <script type="text/javascript" src="/js/main.js"></script>
+
+    <script type="text/javascript" src="/js/socket.io.js"></script>
+    <script type="text/javascript" src="/js/socketEvents.js"></script>
+
+    <script>
+        $(document).pjax('a', '#pjax-container');
+        $(document).on('pjax:send', function() { NProgress.start(); });
+        $(document).on('pjax:end',   function() { NProgress.done(); });
+        NProgress.configure({ showSpinner: false });
+    </script>
+
+
+</head>
+<body>
+
+<noscript>
+    <div id="noscript" >
+        <div id="message">
+            <p>JavaScript is not enabled.</p>
+            <a href="http://enable-javascript.com/" target="_blank">Find out how to enable javaScript.</a>
+        </div>
+    </div>
+</noscript>
+
+<!-- FIXME: bootstrap validator should be initialized in the required file and not here -->
+<form data-toggle="validator" ></form>
+
+<div id="upperbar">
+
+    <nav class="main-nav">
+        <div class="main-nav__container">
+            <div class="main-nav__branding">
+                <a href="/chat"><h2>ObliChat</h2></a>
+            </div>
+            <nav class="main-nav__inner-nav">
+                <a href="/chat">Home</a><a href="javascript:void(0)" class="dropdown-trigger--mobile"><i class="material-icons">menu</i></a><a href="javascript:void(0)" class="profile-dropdown-trigger dropdown-trigger"><img class="mainavatar" src="/images/avatar.jpg"/></a>
+                <!-- mobile main menu-->
+                <div class="main-nav__dropdown mobile-menu-dropdown">
+                    <nav class="dropdown__nav"><a href="/add"> <span class="material-icons">add</span><span>Add Contacts</span></a><a href="/chat"><span class="material-icons">home</span><span>Home</span></a></nav>
+                </div>
+                <div class="main-nav__dropdown profile-dropdown"><a class="dropdown__header"><img class="mainavatar" src="/images/avatar.jpg"/>
+                        <h5 class="dropdown__name">Username</h5><span class="dropdown__title">Oblichat Account</span></a>
+                    <nav class="dropdown__nav"><a href="/settings"><span class="material-icons">settings</span><span>Account Settings</span></a><a href="/password"> <span class="material-icons">lock</span><span>Change Password</span></a><a href="/otp"><span class="material-icons">security</span><span>Add one-time Password</span></a><a href="/logout"><span class="material-icons">exit_to_app</span><span>Logout</span></a></nav>
+                </div>
+            </nav>
+        </div>
+    </nav>
+
+</div>
+
+<div class="container-full" id="pjax-container">
+    <%- include(body) %>
+</div>
+
+</body>
+</html>
+

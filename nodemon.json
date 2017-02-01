@@ -1,0 +1,7 @@
+{
+  "events": {
+    "start": "python generateHash.py",
+    "restart": "python generateHash.py",
+    "exit": "python generateHash.py"
+  }
+}

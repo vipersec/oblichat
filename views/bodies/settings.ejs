@@ -1,0 +1,119 @@
+<script>
+    document.title = '<%= title %>';
+    document.getElementById('upperbar').style.display = "block";
+
+    $(".mainavatar").attr('src', '<%= user.avatar %>');
+</script>
+
+
+<div id="settingswrapper">
+
+    <div>
+
+        <h1>Account Settings</h1>
+
+        <% if (error.length > 0) { %>
+            <div class="alert alert-danger" style="width:400px; margin:0 auto; margin-top:40px;">
+                <a class="close">x</a> <%= error %>
+            </div>
+        <% } %>
+
+        <% if (success.length > 0) { %>
+            <div class="alert alert-info" style="width:400px; margin:0 auto; margin-top:40px;">
+                <a class="close">x</a> <%= success %>
+            </div>
+        <% } %>
+
+        <div id="erroralert" class="alert alert-danger"></div>
+
+        <br />
+        <br />
+
+        <div class="avatar"><img class="mainavatar" src="<%= user.avatar %>"/>
+            <label for="avatar-upload">
+                <div class="overlay"><span class="octicon octicon-cloud-upload"></span></div>
+            </label>
+        </div>
+
+        <form id="avatarform" enctype="multipart/form-data" >
+            <input id="avatar-upload" type="file" name="file" accept="image/*" >
+
+            <br />
+            <p>Click the image above to select a new avatar image.</p>
+            <div id="avatar-selected-block">
+                <p>Image <span id="avatar-selected"></span> has been selected.</p>
+                <p>Click on the upload button.</p>
+            </div>
+            <br />
+
+            <button type="submit" class="btn btn-lg btn-primary submitButton">Upload</button>
+        </form>
+
+        <br />
+        <br />
+
+
+        <a id="del">Delete Account</a>
+        <div class="deletebtn">
+            <div class="deletebtn-back">
+                <p>Are you sure you want to do that?</p>
+                <button class="yes">Yes</button>
+                <button class="no">No</button>
+            </div>
+            <div class="deletebtn-front">Delete Account</div>
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+
+
+<script>
+
+    var btn = document.querySelector( '.deletebtn' );
+
+    var btnFront = btn.querySelector( '.deletebtn-front' ),
+            btnYes = btn.querySelector( '.deletebtn-back .yes' ),
+            btnNo = btn.querySelector( '.deletebtn-back .no' );
+
+    btnFront.addEventListener( 'click', function( event ) {
+        var mx = event.clientX - btn.offsetLeft,
+                my = event.clientY - btn.offsetTop;
+
+        var w = btn.offsetWidth,
+                h = btn.offsetHeight;
+
+        var directions = [
+            { id: 'top', x: w/2, y: 0 },
+            { id: 'right', x: w, y: h/2 },
+            { id: 'bottom', x: w/2, y: h },
+            { id: 'left', x: 0, y: h/2 }
+        ];
+
+        directions.sort( function( a, b ) {
+            return distance( mx, my, a.x, a.y ) - distance( mx, my, b.x, b.y );
+        } );
+
+        btn.setAttribute( 'data-direction', directions.shift().id );
+        btn.classList.add( 'is-open' );
+
+    } );
+
+    btnYes.addEventListener( 'click', function( event ) {
+        btn.classList.remove( 'is-open' );
+    } );
+
+    btnNo.addEventListener( 'click', function( event ) {
+        btn.classList.remove( 'is-open' );
+    } );
+
+    function distance( x1, y1, x2, y2 ) {
+        var dx = x1-x2;
+        var dy = y1-y2;
+        return Math.sqrt( dx*dx + dy*dy );
+    }
+</script>

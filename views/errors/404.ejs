@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>404 Page Not Found</title>
+</head>
+
+<style>
+
+  *, *:before, *:after {
+    box-sizing: border-box;
+  }
+
+  html {
+    height: 100%;
+  }
+
+  body {
+    background: no-repeat center center fixed;
+    background-size: cover;
+    font-family: 'Raleway', sans-serif;
+    background-color: #F5F5F5;
+  }
+
+  .text-wrapper {
+    height: 100%;
+    padding-top: 200px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+  }
+
+  .title {
+    font-size: 9em;
+    font-weight: 700;
+    color: grey;
+    position: relative;
+  }
+
+  .subtitle {
+    font-size: 40px;
+    font-weight: 700;
+    color: grey;
+    position: relative;
+    margin-bottom: 20px;
+  }
+
+  .buttons {
+    margin: 30px;
+  }
+  .buttons a.button {
+    background-color: #b7b6b6;
+    font-weight: 700;
+    border: 2px solid grey;
+    text-decoration: none;
+    padding: 15px;
+    text-transform: uppercase;
+    color: white;
+    border-radius: 26px;
+    -webkit-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+  }
+  .buttons a.button:hover {
+    background-color: #dddddd;
+    color: grey;
+    -webkit-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+  }
+
+  @-webkit-keyframes noise-anim {
+    0% {
+      clip: rect(72px, 9999px, 19px, 0);
+    }
+    5% {
+      clip: rect(127px, 9999px, 4px, 0);
+    }
+    10% {
+      clip: rect(87px, 9999px, 194px, 0);
+    }
+    15% {
+      clip: rect(196px, 9999px, 142px, 0);
+    }
+    20% {
+      clip: rect(1px, 9999px, 181px, 0);
+    }
+    25% {
+      clip: rect(97px, 9999px, 114px, 0);
+    }
+    30% {
+      clip: rect(91px, 9999px, 179px, 0);
+    }
+    35% {
+      clip: rect(141px, 9999px, 130px, 0);
+    }
+    40% {
+      clip: rect(10px, 9999px, 125px, 0);
+    }
+    45% {
+      clip: rect(152px, 9999px, 47px, 0);
+    }
+    50% {
+      clip: rect(177px, 9999px, 175px, 0);
+    }
+    55% {
+      clip: rect(27px, 9999px, 190px, 0);
+    }
+    60% {
+      clip: rect(136px, 9999px, 191px, 0);
+    }
+    65% {
+      clip: rect(108px, 9999px, 104px, 0);
+    }
+    70% {
+      clip: rect(13px, 9999px, 44px, 0);
+    }
+    75% {
+      clip: rect(184px, 9999px, 123px, 0);
+    }
+    80% {
+      clip: rect(74px, 9999px, 198px, 0);
+    }
+    85% {
+      clip: rect(138px, 9999px, 34px, 0);
+    }
+    90% {
+      clip: rect(19px, 9999px, 167px, 0);
+    }
+    95% {
+      clip: rect(73px, 9999px, 74px, 0);
+    }
+    100% {
+      clip: rect(187px, 9999px, 186px, 0);
+    }
+  }
+
+  @keyframes noise-anim {
+    0% {
+      clip: rect(72px, 9999px, 19px, 0);
+    }
+    5% {
+      clip: rect(127px, 9999px, 4px, 0);
+    }
+    10% {
+      clip: rect(87px, 9999px, 194px, 0);
+    }
+    15% {
+      clip: rect(196px, 9999px, 142px, 0);
+    }
+    20% {
+      clip: rect(1px, 9999px, 181px, 0);
+    }
+    25% {
+      clip: rect(97px, 9999px, 114px, 0);
+    }
+    30% {
+      clip: rect(91px, 9999px, 179px, 0);
+    }
+    35% {
+      clip: rect(141px, 9999px, 130px, 0);
+    }
+    40% {
+      clip: rect(10px, 9999px, 125px, 0);
+    }
+    45% {
+      clip: rect(152px, 9999px, 47px, 0);
+    }
+    50% {
+      clip: rect(177px, 9999px, 175px, 0);
+    }
+    55% {
+      clip: rect(27px, 9999px, 190px, 0);
+    }
+    60% {
+      clip: rect(136px, 9999px, 191px, 0);
+    }
+    65% {
+      clip: rect(108px, 9999px, 104px, 0);
+    }
+    70% {
+      clip: rect(13px, 9999px, 44px, 0);
+    }
+    75% {
+      clip: rect(184px, 9999px, 123px, 0);
+    }
+    80% {
+      clip: rect(74px, 9999px, 198px, 0);
+    }
+    85% {
+      clip: rect(138px, 9999px, 34px, 0);
+    }
+    90% {
+      clip: rect(19px, 9999px, 167px, 0);
+    }
+    95% {
+      clip: rect(73px, 9999px, 74px, 0);
+    }
+    100% {
+      clip: rect(187px, 9999px, 186px, 0);
+    }
+  }
+  .subtitle:after, .title:after {
+    content: attr(data-content);
+    position: absolute;
+    left: 2px;
+    text-shadow: -1px 0 white;
+    top: 0;
+    color: grey;
+    overflow: hidden;
+    clip: rect(0, 900px, 0, 0);
+    -webkit-animation: noise-anim 2s infinite linear alternate-reverse;
+    animation: noise-anim 2s infinite linear alternate-reverse;
+  }
+
+  @-webkit-keyframes noise-anim-2 {
+    0% {
+      clip: rect(85px, 9999px, 75px, 0);
+    }
+    5% {
+      clip: rect(18px, 9999px, 71px, 0);
+    }
+    10% {
+      clip: rect(183px, 9999px, 160px, 0);
+    }
+    15% {
+      clip: rect(2px, 9999px, 165px, 0);
+    }
+    20% {
+      clip: rect(84px, 9999px, 16px, 0);
+    }
+    25% {
+      clip: rect(178px, 9999px, 69px, 0);
+    }
+    30% {
+      clip: rect(184px, 9999px, 76px, 0);
+    }
+    35% {
+      clip: rect(55px, 9999px, 150px, 0);
+    }
+    40% {
+      clip: rect(39px, 9999px, 169px, 0);
+    }
+    45% {
+      clip: rect(109px, 9999px, 169px, 0);
+    }
+    50% {
+      clip: rect(189px, 9999px, 138px, 0);
+    }
+    55% {
+      clip: rect(25px, 9999px, 21px, 0);
+    }
+    60% {
+      clip: rect(197px, 9999px, 158px, 0);
+    }
+    65% {
+      clip: rect(25px, 9999px, 154px, 0);
+    }
+    70% {
+      clip: rect(126px, 9999px, 99px, 0);
+    }
+    75% {
+      clip: rect(157px, 9999px, 37px, 0);
+    }
+    80% {
+      clip: rect(62px, 9999px, 89px, 0);
+    }
+    85% {
+      clip: rect(143px, 9999px, 171px, 0);
+    }
+    90% {
+      clip: rect(100px, 9999px, 90px, 0);
+    }
+    95% {
+      clip: rect(6px, 9999px, 183px, 0);
+    }
+    100% {
+      clip: rect(52px, 9999px, 190px, 0);
+    }
+  }
+
+  @keyframes noise-anim-2 {
+    0% {
+      clip: rect(85px, 9999px, 75px, 0);
+    }
+    5% {
+      clip: rect(18px, 9999px, 71px, 0);
+    }
+    10% {
+      clip: rect(183px, 9999px, 160px, 0);
+    }
+    15% {
+      clip: rect(2px, 9999px, 165px, 0);
+    }
+    20% {
+      clip: rect(84px, 9999px, 16px, 0);
+    }
+    25% {
+      clip: rect(178px, 9999px, 69px, 0);
+    }
+    30% {
+      clip: rect(184px, 9999px, 76px, 0);
+    }
+    35% {
+      clip: rect(55px, 9999px, 150px, 0);
+    }
+    40% {
+      clip: rect(39px, 9999px, 169px, 0);
+    }
+    45% {
+      clip: rect(109px, 9999px, 169px, 0);
+    }
+    50% {
+      clip: rect(189px, 9999px, 138px, 0);
+    }
+    55% {
+      clip: rect(25px, 9999px, 21px, 0);
+    }
+    60% {
+      clip: rect(197px, 9999px, 158px, 0);
+    }
+    65% {
+      clip: rect(25px, 9999px, 154px, 0);
+    }
+    70% {
+      clip: rect(126px, 9999px, 99px, 0);
+    }
+    75% {
+      clip: rect(157px, 9999px, 37px, 0);
+    }
+    80% {
+      clip: rect(62px, 9999px, 89px, 0);
+    }
+    85% {
+      clip: rect(143px, 9999px, 171px, 0);
+    }
+    90% {
+      clip: rect(100px, 9999px, 90px, 0);
+    }
+    95% {
+      clip: rect(6px, 9999px, 183px, 0);
+    }
+    100% {
+      clip: rect(52px, 9999px, 190px, 0);
+    }
+  }
+  .subtitle:before, .title:before {
+    content: attr(data-content);
+    position: absolute;
+    left: -2px;
+    text-shadow: 1px 0 black;
+    top: 0;
+    color: grey;
+    overflow: hidden;
+    clip: rect(0, 900px, 0, 0);
+    -webkit-animation: noise-anim-2 3s infinite linear alternate-reverse;
+    animation: noise-anim-2 3s infinite linear alternate-reverse;
+  }
+
+
+</style>
+
+<body>
+
+  <div class="text-wrapper">
+    <div class="title" data-content="404">
+      404
+    </div>
+
+    <div class="subtitle" data-content="Oops, the page you're looking for doesn't exist">
+      Oops, the page you're looking for doesn't exist.
+    </div>
+
+    <div class="buttons">
+      <a class="button" href="/">Go to homepage</a>
+    </div>
+  </div>
+
+</body>
+
+</html>

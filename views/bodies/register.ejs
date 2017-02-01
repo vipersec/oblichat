@@ -1,0 +1,72 @@
+<script>
+	document.title = '<%= title %>';
+	document.getElementById('upperbar').style.display = "none";
+</script>
+
+<div class="bs-docs-section">
+
+	<h1 id="logo"><span>Obli</span>Chat</h1>
+
+	<% if (message.length > 0) { %>
+		<div class="alert alert-danger">
+			<a class="close">x</a> <%= message %>
+		</div>
+
+	<% } %>
+
+	<div id="erroralert" class="alert alert-danger" style="margin: 10px auto;"></div>
+
+	<div id="panel" class="panel panel-default col-centered">
+		<div class="panel-body">
+			<form id="registerform" data-toggle="validator" role="form" method="post">
+
+				<div class="form-group has-feedback text-center">
+					<label for="username" class="control-label">Username</label>
+
+					<input class="form-control text-center" name="username" type="text" pattern="^[_A-z0-9]{1,}$" maxlength="20"
+						   id="username" placeholder="JollyRogers" data-error="This name is invalid" required>
+
+					<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+					<div class="help-block with-errors"></div>
+				</div>
+
+				<div class="form-group text-center">
+					<label for="inputPassword" class="control-label">Password</label>
+					<div class="form-inline row">
+						<div class="form-group col-sm-6">
+							<input name="password" type="password" data-toggle="validator" data-minlength="6"
+								   class="form-control text-center" id="inputPassword" placeholder="Password">
+						</div>
+						<div class="form-group col-sm-6">
+							<input name="passwordrepeat" type="password" class="form-control text-center"
+								   id="inputPasswordConfirm" data-match="#inputPassword"
+								   data-match-error="Whoops, these don't match" placeholder="Confirm">
+							<div class="help-block with-errors"></div>
+						</div>
+
+						<div class="help-block text-center">Minimum of 6 characters</div>
+
+					</div>
+				</div>
+
+				<div class="form-group text-center">
+					<button type="submit" class="btn btn-lg btn-primary submitButton">Register</button>
+				</div>
+
+				<br />
+				<p class="text-center">Already have an account? <br /> <a href="/">Login here.</a> </p>
+
+			</form>
+		</div>
+	</div> <!-- /example -->
+
+	<p id="donate">
+		<a href="http://bitcoin.org/">BitCoin</a>:
+		<a href="bitcoin:1Kq6b6iN4ph2CpZEcS6c32ABDqs2UrnN85">1Kq6b6iN4ph2CpZEcS6c32ABDqs2UrnN85</a>
+	</p>
+
+
+
+</div>
+
+

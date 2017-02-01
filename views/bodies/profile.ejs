@@ -1,0 +1,96 @@
+<script>
+    document.title = '<%= title %>';
+
+    <% if (isLoggedIn) { %>
+        $(".dropdown__name").text( '<%= user.username %>' );
+        $(".mainavatar").attr('src', '<%= user.avatar %>');
+    <% }%>
+
+    <% if (isLoggedIn) { %>
+        document.getElementById('upperbar').style.display = "block";
+    <% } else { %>
+        document.getElementById('upperbar').style.display = "hidden";
+    <% } %>
+</script>
+
+<div id="profilewrapper">
+
+    <% if (!isLoggedIn) { %>
+    <div class="profile_logo">
+        Oblichat
+    </div>
+    <% }%>
+
+
+    <div id="infoalert" class="alert alert-info"></div>
+
+    <div id="erroralert" class="alert alert-danger"></div>
+
+
+    <img class="profile_avatar" src="<%= avatar['avatar'] %>"/>
+
+    <h1><%= username %></h1>
+
+    <div class="profile_content">
+
+        <% if (isLoggedIn) { %>
+
+            <% if ( user.contacts.indexOf(username) > -1) { %>
+
+                <div class="profile-chat">
+                    <a class="button info" role="button">
+                        <span>Chat</span>
+                        <div class="icon">
+                            <i class="fa fa-comment"></i>
+                        </div>
+                    </a>
+
+                    <input type="hidden" class="username" value="<%= username %>">
+                </div>
+
+            <% } else if (user.requests.indexOf(username) > -1) { %>
+
+                <div class="profile-accept">
+                    <a class="button success" role="button">
+                        <span>Accept</span>
+                        <div class="icon">
+                            <i class="fa fa-check"></i>
+                        </div>
+                    </a>
+
+                    <input type="hidden" class="username" value="<%= username %>">
+                </div>
+
+            <% } else { %>
+
+                <div class="profile-add">
+                    <a class="button success" role="button">
+                        <span>Add</span>
+                        <div class="icon">
+                            <i class="fa fa-check"></i>
+                        </div>
+                    </a>
+
+                    <input type="hidden" class="username" value="<%= username %>">
+                </div>
+
+            <% }  %>
+
+                <div class="profile-block">
+                    <a class="button" role="button">
+                        <span>Block</span>
+                        <div class="icon">
+                            <i class="fa fa-remove"></i>
+                        </div>
+                    </a>
+
+                    <input type="hidden" class="username" value="<%= username %>">
+                </div>
+
+        <% } else { %>
+            <label>You must <a href="/login">log in</a> in to interact with the contact</label>
+        <% } %>
+
+    </div>
+
+</div>

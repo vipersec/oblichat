@@ -1,0 +1,208 @@
+<script xmlns="http://www.w3.org/1999/html">
+	document.title = '<%= title %>';
+	document.getElementById('upperbar').style.display = "block";
+
+	$(".dropdown__name").text( '<%= user.username %>' );
+	$(".mainavatar").attr('src', '<%= user.avatar %>');
+	$("#convSearch").val('');
+</script>
+
+<div id="sidebar">
+	<div class="convGroup">
+
+
+		<form id="oblisearch" method="post">
+
+			<input type="text" id="convSearch" class="clearable" name="username"
+				   autocomplete="off" placeholder="Search Contacts..">
+
+			<p id="searchnotfound" class="graytext">No results, try searching oblichat directory</p>
+			<button type="submit" id="oblisearchbutton">Search Oblichat</button>
+
+		</form>
+
+		<% if (info.length > 0) { %>
+		<div class="alert alert-info" style="margin:10px;">
+			<a class="close">x</a> <%= info %>
+		</div>
+		<% } %>
+
+		<% if (error.length > 0) { %>
+		<div class="alert alert-danger" style="width:400px; margin:0 auto; margin-top:40px;">
+			<a class="close">x</a> <%= error %>
+		</div>
+		<% } %>
+
+		<div id="infoalert" class="alert alert-info"></div>
+
+		<div id="erroralert" class="alert alert-danger"></div>
+
+
+		<!-- Search results section -->
+		<div id="pjax-search-container">
+			<!-- search results are displayed here using pjax -->
+		</div>
+
+
+		<!-- Contacts and requests section -->
+		<div class="tabs">
+
+			<% if ( focus ) { %>
+				<input type="radio" id="tab1" name="tab-control">
+				<input type="radio" id="tab2" name="tab-control" checked>
+			<% } else { %>
+				<input type="radio" id="tab1" name="tab-control" checked>
+				<input type="radio" id="tab2" name="tab-control">
+			<% } %>
+
+			<ul>
+
+				<li>
+					<label for="tab1">
+						<svg viewBox="0 0 16 16">
+							<path d="M3 0v16h12v-16h-12zM9 4.005c1.102 0 1.995 0.893 1.995 1.995s-0.893 1.995-1.995 1.995-1.995-0.893-1.995-1.995 0.893-1.995 1.995-1.995v0zM12 12h-6v-1c0-1.105 0.895-2 2-2v0h2c1.105 0 2 0.895 2 2v1z"></path>
+							<path d="M1 1h1.5v3h-1.5v-3z"></path>
+							<path d="M1 5h1.5v3h-1.5v-3z"></path>
+							<path d="M1 9h1.5v3h-1.5v-3z"></path>
+							<path d="M1 13h1.5v3h-1.5v-3z"></path>
+						</svg><br><span>Contacts</span></label></li>
+
+				<li>
+					<label for="tab2">
+						<svg viewBox="0 0 16 16">
+							<path d="M6 11.5c0-2.363 1.498-4.383 3.594-5.159 0.254-0.571 0.406-1.206 0.406-1.841 0-2.485 0-4.5-3-4.5s-3 2.015-3 4.5c0 1.548 0.898 3.095 2 3.716v0.825c-3.392 0.277-6 1.944-6 3.959h6.208c-0.135-0.477-0.208-0.98-0.208-1.5z"></path>
+							<path d="M11.5 7c-2.485 0-4.5 2.015-4.5 4.5s2.015 4.5 4.5 4.5c2.485 0 4.5-2.015 4.5-4.5s-2.015-4.5-4.5-4.5zM14 12h-2v2h-1v-2h-2v-1h2v-2h1v2h2v1z"></path>
+						</svg><br><span>Requests</span></label></li>
+
+			</ul>
+
+			<div class="slider"><div class="indicator"></div></div>
+
+			<div class="tab-content">
+				<section>
+					<h2>Contacts</h2>
+
+					<% if ( contacts.length > 0) { %>
+
+						<!-- show current contact list -->
+						<% for(var i=0; i<contacts.length; i++) {%>
+							<div class="contact conv_head_highlight">
+
+									<div id="<%= contacts[i]['username'] %>" class="conv_head">
+										<!-- TODO: Remove inline stylesheet and add an img tag instead -->
+										<div class="conv_img" style="background-image: url('<%= contacts[i]['avatar'] %>'); background-size: 50px 50px;">
+											<i class="circle-mark fa fa-circle" aria-hidden="true"></i>
+										</div>
+										<%= contacts[i]['username'] %>
+
+										<span class="notification">0</span>
+
+										<input type="hidden" class="username" value="<%= contacts[i]['username'] %>">
+									</div>
+
+							</div>
+						<% } %>
+
+					<% } else { %>
+
+						<p class="graytext">Contact list is empty</p>
+
+						<script>
+							$('#oblisearchbutton').show();
+
+							if(  $(".conv_head_result").is(":visible") == true )
+							{
+								$('#oblisearchbutton').hide();
+							}
+						</script>
+
+					<% } %>
+
+
+
+				</section>
+				<section>
+					<h2>Requests</h2>
+
+					<% if ( requests.length > 0) { %>
+
+						<!-- show pending requests -->
+						<% for(var i=0; i<requests.length; i++) {%>
+
+							<div class="contact">
+								<a href="user/<%= requests[i]['username'] %>">
+									<div class="conv_head">
+										<!-- TODO: Remove inline stylesheet and add an img tag instead -->
+										<div class="conv_img" style="background: url('<%= requests[i]['avatar'] %>'); background-size: 50px 50px;">
+										</div>
+										<%= requests[i]['username'] %>
+									</div>
+								</a>
+
+								<div class="accept">
+									<a class="button success" role="button">
+										<span>Accept</span>
+										<div class="icon">
+											<i class="fa fa-check"></i>
+										</div>
+									</a>
+
+									<input type="hidden" class="username" value="<%= requests[i]['username'] %>">
+								</div>
+
+								<div class="block">
+									<a class="button" role="button">
+										<span>Block</span>
+										<div class="icon">
+											<i class="fa fa-remove"></i>
+										</div>
+									</a>
+
+									<input type="hidden" class="username" value="<%= requests[i]['username'] %>">
+								</div>
+
+								<div style="clear:both;"></div>
+								<hr class="style13">
+							</div>
+
+						<% } %>
+
+					<% } else { %>
+
+						<p class="graytext">No incoming requests</p>
+
+					<% } %>
+
+				</section>
+			</div>
+
+			<button id="oblisearchbutton2">Search Oblichat</button>
+
+		</div>
+
+	</div>
+
+</div>
+
+
+<div class="wrapper">
+
+	<div id="inner" class="inner">
+		<div id="content" class="content">
+			<div id='selecteduser'> <a id="userdetails" href=''><img class='avatar-circle' src='' ></a> </div>
+		</div>
+	</div>
+
+</div>
+
+<div id="bottom" class="bottom">
+	<textarea id="input" class="input"></textarea>
+	<div id="send" class="send"></div>
+</div>
+
+
+
+<script>
+	// when the page loads check which users are online
+	socket.emit('check');
+</script>

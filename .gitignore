@@ -1,0 +1,12 @@
+#Intelij IDE
+.idea
+
+#Personal checks
+generateHash.py
+checksum.txt
+
+#Nodejs Packages
+node_modules
+
+#uploads directory
+public/uploads

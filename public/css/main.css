@@ -12,6 +12,10 @@ body {
 :focus {outline:none;}
 ::-moz-focus-inner {border:0;}
 
+div#messageKeeper {
+    display:none;
+}
+
 h1#logo {
     text-align: center;
     margin-top: 40px;

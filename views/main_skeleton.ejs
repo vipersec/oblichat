@@ -78,7 +78,7 @@
                 <a href="/chat">Home</a><a href="javascript:void(0)" class="dropdown-trigger--mobile"><i class="material-icons">menu</i></a><a href="javascript:void(0)" class="profile-dropdown-trigger dropdown-trigger"><img class="mainavatar" src="/images/avatar.jpg"/></a>
                 <!-- mobile main menu-->
                 <div class="main-nav__dropdown mobile-menu-dropdown">
-                    <nav class="dropdown__nav"><a href="/add"> <span class="material-icons">add</span><span>Add Contacts</span></a><a href="/chat"><span class="material-icons">home</span><span>Home</span></a></nav>
+                    <nav class="dropdown__nav"><a href="/chat"><span class="material-icons">home</span><span>Home</span></a></nav>
                 </div>
                 <div class="main-nav__dropdown profile-dropdown"><a class="dropdown__header"><img class="mainavatar" src="/images/avatar.jpg"/>
                         <h5 class="dropdown__name">Username</h5><span class="dropdown__title">Oblichat Account</span></a>
@@ -89,6 +89,8 @@
     </nav>
 
 </div>
+
+<div id="messageKeeper"></div>
 
 <div class="container-full" id="pjax-container">
     <%- include(body) %>

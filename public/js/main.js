@@ -350,9 +350,11 @@ $(document).ready(function() {
 
 
         // hide all the other chat messages except the ones from the user we selected to talk to
-        $('.message-wrapper.' + username).show();
-        $('.message-wrapper').not('.' + username).hide();
+        var message_from_selected_user = $('.message-wrapper.' + username);
+        message_from_selected_user.show();
+        message_from_selected_user.removeClass('unread');
 
+        $('.message-wrapper').not('.' + username).hide();
 
         var notifyuser = $("#" + username + " > .notification");
         notifyuser.hide();

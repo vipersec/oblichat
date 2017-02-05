@@ -130,6 +130,8 @@ io.on('connection', function (socket) {
             // which means that we can emit the 'offline' event (user left)
             if ( !io.nsps["/"].adapter.rooms[roomCache[username]] ) {
 
+               // TODO: clear public RSA keys from the server for the given offline user
+
                // emit to our contacts that we are not online
                functions.getUserContacts( userId, function(err, contacts) {
 

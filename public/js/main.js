@@ -69,70 +69,6 @@ function isInvalid() {
 }
 
 /**
- * A function that checks if there is an active public key stored in the server,
- * if not it generates a new public/private key pair and sends the new public key to the server
- */
-function generateKeyPair() {
-
-    // check if an active public key has been set for us in the server side
-    $.ajax({
-        type: 'POST',
-        url: '/publicKeyExists',
-        success: function(data) {
-            if ( data == false ) {
-
-                // generate our keys
-                var keySize = 2048;
-                var crypt = new JSEncrypt({default_key_size: keySize});
-                crypt.getKey();
-
-                // set a new private RSA key
-                var privateKey = crypt.getPrivateKey();
-                localStorage.setItem('privateKey', privateKey);
-
-                // set a new public RSA key
-                var publicKey = crypt.getPublicKey();
-                localStorage.setItem('publicKey', publicKey);
-
-                // send the public key to the server
-                $.ajax({
-                    type: 'POST',
-                    url: '/publicKeyStore',
-                    data: { publicKey: publicKey },
-                    success: function(data) {
-                        if ( data == "OK" ) {
-                            // everything is ok, remove the loader
-                            console.log("ready!!!");
-                            //$('#time-report').text('Done!');
-                        }
-                        else {
-                            // Something went wrong
-                            alertError("Something went wrong")
-                        }
-                    }
-                });
-
-            }
-        }
-    });
-
-}
-
-/**
- * Function that gets the current active public key of a given user
- */
-function getPublicKey(username, callback) {
-
-    $.ajax({
-        type: 'POST',
-        url: '/getPublicKey',
-        data: { username: username },
-        success: callback
-    });
-
-}
-
-/**
  * Helper function, checks if the file is an actual image
  * @callback callback
  * @param {string} elementid - the element's id that holds the file content
@@ -211,9 +147,138 @@ function alertInfo(message) {
     $('#infoalert').show();
 }
 
+/**
+ * A function that checks if there is an active public key stored in the server,
+ * if not it generates a new public/private key pair and sends the new public key to the server
+ */
+function generateKeyPair() {
+
+    // check if an active public key has been set for us in the server side
+    $.ajax({
+        type: 'POST',
+        url: '/publicKeyExists',
+        success: function(data) {
+
+            if ( data == false ) {
+
+                // generate our keys
+                var keySize = 2048;
+                var crypt = new JSEncrypt({default_key_size: keySize});
+                crypt.getKey();
+
+                // set a new private RSA key
+                var privateKey = crypt.getPrivateKey();
+                localStorage.setItem('privateKey', privateKey);
+
+                // set a new public RSA key
+                var publicKey = crypt.getPublicKey();
+                localStorage.setItem('publicKey', publicKey);
+
+                // send the public key to the server
+                $.ajax({
+                    type: 'POST',
+                    url: '/publicKeyStore',
+                    data: { publicKey: publicKey },
+                    success: function(data) {
+                        if ( data == "OK" ) {
+                            // everything is ok, remove the loader
+                            loaded();
+                        }
+                        else {
+                            // Something went wrong
+                            alertError("Something went wrong")
+                        }
+                    }
+                });
+
+            }
+            else {
+                // The public key is already created and stored
+                loaded();
+            }
+
+        }
+    });
+
+}
+
+/**
+ * Function that gets the current active public key of a given user
+ */
+function getPublicKey(username, callback) {
+
+    NProgress.start();
+
+    // disable input while loading
+    document.getElementById("input").disabled = true;
+
+    $.ajax({
+        type: 'POST',
+        url: '/getPublicKey',
+        data: { username: username },
+        success: callback
+    });
+
+}
+
 $(document).ready(function() {
 
     var container = $('#pjax-container');
+
+    // select contact to chat
+    container.on("click", ".conv_head_highlight", function(){
+
+        // get the username of the selected user from the element
+        var username = $(".username", this).val();
+        var $this = this;
+
+        getPublicKey(username, function(publicKey) {
+
+            console.log("The public key of user " + username + " is: " + publicKey);
+
+            if($('#bottom').is(':hidden')){
+                $('#bottom').show();
+                //$('#bottom').animateCss('slideInUp');
+            }
+
+            $('#input').focus();
+
+            $('.conv_head_highlight').removeClass('selected');
+            //highlight the avatar of the person you are talking with
+            $($this).addClass('selected');
+
+
+            // get the avatar image of the selected element (we need the URL only, that's why we use slice() )
+            var avatar = $(".conv_img", $this).css("background-image").slice(5, -2);
+
+            $("#userdetails").attr('href', '/user/' + username);
+            $("#userdetails > .avatar-circle").attr('src', avatar);
+            $("#selecteduser").show();
+
+
+            // hide all the other chat messages except the ones from the user we selected to talk to
+            var message_from_selected_user = $('.message-wrapper.' + username);
+            message_from_selected_user.show();
+            message_from_selected_user.removeClass('unread');
+
+            $('.message-wrapper').not('.' + username).hide();
+
+            var notifyuser = $("#" + username + " > .notification");
+            notifyuser.hide();
+            // clear any previous notification (message counter)
+            notifyuser.text(0);
+
+
+            var inner = $('#inner');
+            inner.scrollTop(inner[0].scrollHeight); //scrollBottom
+
+            // loading have finished, enable the input again
+            document.getElementById("input").disabled = false;
+
+            NProgress.done();
+        });
+
+    });
 
     $.fn.extend({
         animateCss: function (animationName) {
@@ -384,58 +449,6 @@ $(document).ready(function() {
             });
 
         }
-
-    });
-
-    // select contact to chat
-    container.on("click", ".conv_head_highlight", function(){
-
-        // get the username of the selected user from the element
-        var username = $(".username", this).val();
-
-
-        getPublicKey(username, function(publicKey) {
-            console.log("The public key of user " + username + " is: " + publicKey);
-        });
-
-
-
-        if($('#bottom').is(':hidden')){
-            $('#bottom').show();
-            //$('#bottom').animateCss('slideInUp');
-        }
-
-        $('#input').focus();
-
-        $('.conv_head_highlight').removeClass('selected');
-        //highlight the avatar of the person you are talking with
-        $(this).addClass('selected');
-
-
-        // get the avatar image of the selected element (we need the URL only, that's why we use slice() )
-        var avatar = $(".conv_img", this).css("background-image").slice(5, -2);
-        var userdetails = $("#userdetails");
-
-        $("#userdetails").attr('href', '/user/' + username);
-        $("#userdetails > .avatar-circle").attr('src', avatar);
-        $("#selecteduser").show();
-
-
-        // hide all the other chat messages except the ones from the user we selected to talk to
-        var message_from_selected_user = $('.message-wrapper.' + username);
-        message_from_selected_user.show();
-        message_from_selected_user.removeClass('unread');
-
-        $('.message-wrapper').not('.' + username).hide();
-
-        var notifyuser = $("#" + username + " > .notification");
-        notifyuser.hide();
-        // clear any previous notification (message counter)
-        notifyuser.text(0);
-
-
-        var inner = $('#inner');
-        inner.scrollTop(inner[0].scrollHeight); //scrollBottom
 
     });
 

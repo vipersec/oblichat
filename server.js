@@ -99,17 +99,6 @@ io.on('connection', function (socket) {
          socket.join( roomCache[username] );
          console.log( "Personal room: " + roomCache[username] );
 
-         // emit to our contacts that we are online
-         functions.getUserContacts( userId, function(err, contacts) {
-            console.log( "Contacts: " + contacts );
-
-            // use lupus for non-blocking for loop
-            lupus(0, contacts.length, function(i) {
-               io.to(roomCache[contacts[i]]).emit('online', username);
-            });
-
-         });
-
       });
 
 
@@ -121,6 +110,27 @@ io.on('connection', function (socket) {
 
    }
 
+   socket.on('loaded', function() {
+      if (authenticated) {
+
+         functions.getUsername( userId, function(err, username) {
+
+            // emit to our contacts that we are online
+            functions.getUserContacts( userId, function(err, contacts) {
+               console.log( "Contacts: " + contacts );
+
+               // use lupus for non-blocking for loop
+               lupus(0, contacts.length, function(i) {
+                  io.to(roomCache[contacts[i]]).emit('online', username);
+               });
+
+            });
+
+         });
+
+      }
+   });
+
    socket.on('disconnect', function() {
       if (authenticated) {
 
@@ -130,7 +140,11 @@ io.on('connection', function (socket) {
             // which means that we can emit the 'offline' event (user left)
             if ( !io.nsps["/"].adapter.rooms[roomCache[username]] ) {
 
-               // TODO: clear public RSA keys from the server for the given offline user
+               // remove our name from the roomCache
+               delete roomCache[username];
+
+               // clear public RSA keys from the server for the given offline user
+               delete publicKeys[username];
 
                // emit to our contacts that we are not online
                functions.getUserContacts( userId, function(err, contacts) {

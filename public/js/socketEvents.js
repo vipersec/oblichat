@@ -21,6 +21,15 @@ function socketConnect() {
 }
 
 /**
+ * Function that executes after the RSA key pair has been generated and is stored on the server.
+ * it hides the loading icon and emits to our contacts that we are online
+ */
+function loaded() {
+    socket.emit('loaded');
+    console.log("ready!!!");
+}
+
+/**
  * This function counts the total unread messages that we have from a given
  * user and displays the number back to us with a nice orange bubble next to the user's avatar
  * @param {string} username - the username that has sent some unread messages

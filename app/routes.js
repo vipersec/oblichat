@@ -451,7 +451,15 @@ module.exports = function(app, passport) {
 
 		// check if he is in his contact list
 		if ( req.user.contacts.indexOf(req.body.username) >= 0 ) {
-			res.send( publicKeys[req.body.username] );
+
+			// if public keys is stored send it back
+			if ( publicKeys[req.body.username] ) {
+				res.send( publicKeys[req.body.username] );
+			}
+			else {
+				res.send("No public keys found, user is probably not online");
+			}
+
 		}
 		else {
 			res.send(false);

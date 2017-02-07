@@ -1439,3 +1439,32 @@ div.block {
 }
 
 /* User Profile section ends here */
+
+
+/* Loader that is shown while the RSA keys are being generated starts here */
+
+#loader {
+    top: 0;
+    left: 0;
+    text-align:center;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: #f2f2f2;
+    background-attachment: fixed;
+    z-index: 1000;
+    display: none;
+}
+
+#loader p {
+    margin-top: 26%;
+    font-size: 250%;
+}
+
+@media (max-width: 1500px) {
+    #loader p {
+        margin-top: 45%;
+    }
+}
+
+/* Loader ends here */

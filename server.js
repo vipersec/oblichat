@@ -172,6 +172,9 @@ io.on('connection', function (socket) {
             functions.getUsername( userId, function(err, fromuser) {
                // notify user that you sent a message using his personal room
                io.to(roomCache[username]).emit('receive', message, fromuser);
+
+               // TODO: only for debugging, remove this
+               console.log( "User '" + fromuser + "' sent to user '" + username + "' message: " + message )
             });
          }
 

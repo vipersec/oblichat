@@ -236,6 +236,9 @@ $(document).ready(function() {
 
             console.log("The public key of user " + username + " is: " + publicKey);
 
+            // store user's public key locally for later use
+            localStorage.setItem(username, publicKey);
+
             if($('#bottom').is(':hidden')){
                 $('#bottom').show();
                 //$('#bottom').animateCss('slideInUp');

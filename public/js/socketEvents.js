@@ -27,22 +27,22 @@ function socketConnect() {
  */
 function showSpinner() {
     var opts = {
-        lines: 9 // The number of lines to draw
+        lines: 11 // The number of lines to draw
         , length: 0 // The length of each line
-        , width: 30 // The line thickness
-        , radius: 54 // The radius of the inner circle
-        , scale: 1.5 // Scales overall size of the spinner
+        , width: 52 // The line thickness
+        , radius: 0 // The radius of the inner circle
+        , scale: 1.75 // Scales overall size of the spinner
         , corners: 1 // Corner roundness (0..1)
-        , color: '#000' // #rgb or #rrggbb or array of colors
-        , opacity: 0.1 // Opacity of the lines
+        , color: '#7572f2' // #rgb or #rrggbb or array of colors
+        , opacity: 0.2 // Opacity of the lines
         , rotate: 0 // The rotation offset
         , direction: 1 // 1: clockwise, -1: counterclockwise
-        , speed: 0.9 // Rounds per second
-        , trail: 41 // Afterglow percentage
+        , speed: 0.8 // Rounds per second
+        , trail: 34 // Afterglow percentage
         , fps: 20 // Frames per second when using setTimeout() as a fallback for CSS
         , zIndex: 2e9 // The z-index (defaults to 2000000000)
         , className: 'spinner' // The CSS class to assign to the spinner
-        , top: '50%' // Top position relative to parent
+        , top: '40%' // Top position relative to parent
         , left: '50%' // Left position relative to parent
         , shadow: false // Whether to render a shadow
         , hwaccel: false // Whether to use hardware acceleration
@@ -50,7 +50,6 @@ function showSpinner() {
     };
     var target = document.getElementById('spinner');
     var spinner = new Spinner(opts).spin(target);
-    $(".spinner").css({"top": "30%"});
     $("#loader").show();
 }
 
@@ -202,7 +201,14 @@ $(document).ready(function() {
             appendMessage(user, message, 'me');
             inner.scrollTop(inner[0].scrollHeight); //scrollBottom
 
-            socket.emit('send', message, user);
+            // retrieve the public key of the recipient from the local storage
+            var publicKey = localStorage.getItem(user);
+
+            var crypt = new JSEncrypt();
+            crypt.setPublicKey(publicKey);
+
+            // send the message to the server encrypted
+            socket.emit('send', crypt.encrypt(message), user);
         }
 
     }
@@ -217,6 +223,14 @@ $(document).ready(function() {
         var audio = new Audio('/sounds/alert.wav');
 
         if (message) {
+
+            // decrypt message using our private key which is stored locally
+            var crypt = new JSEncrypt();
+            var ownPrivateKey = localStorage.getItem('privateKey');
+            crypt.setPrivateKey(ownPrivateKey);
+            message = crypt.decrypt(message);
+
+            // remove any potential code that can harm us
             message = escapeHtml(message);
 
             // if the div "content" does not exist, then the user is not in the chat page

@@ -1,10 +1,13 @@
 # Oblichat
 
-**Oblichat** is chat web application which is really *oblivious*. In other words the web server forgets every message that is being sent.
-The #1 rule of oblichat is to never save any messages. The communication between the users happens using web sockets, the server forwards the message to it's recipient and forgets about it.
+**Oblichat** is chat web application which is really *oblivious*. In other words the web server forgets every message that is being sent (no message is ever recorder) and the browser forgets the messages everytime the page is refreshed.
+
+I have implemented end-to-end encryption using RSA keys but what is most notable about this web application is that no one from the server side can decrypt the messages. That happens because the private key stays in the user's browser and it is never sent to the server.
+
+The encryption and the decryption of the messages happens on the fly and it's completely transparent to the end user as you can in the example below.
 
 <kbd>
-![demo](demo/peek.gif)
+![demo](demo/demo.gif)
 </kbd>
 
 

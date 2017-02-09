@@ -11,7 +11,7 @@ The encryption and the decryption of the messages happens **on the fly** and it'
 </kbd>
 
 
-**Oblichat** was made using `Node.js` + `sockets.io` + `pjax`. It is a single-page web application and each page is loaded dynamically using AJAX. Right now this is only a very basic prototype to give you the general idea.
+**Oblichat** was made using `Node.js` + `sockets.io` + `pjax`. It is a single-page web application and each page is loaded dynamically using AJAX. Right now it is only a very basic prototype to present you the general idea.
 
 
 ## Installation

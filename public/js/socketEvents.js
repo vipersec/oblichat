@@ -173,6 +173,23 @@ $(document).ready(function() {
     socket.on('online', function(username) {
         console.log("Username " + username + " is online");
         $("#" + username + " > .conv_img > .circle-mark").css('color', '#43e265');
+
+        // if the user that we have selected just came online request the public key again
+        if ( $('.selected > .conv_head > .username').val() == username ) {
+
+            console.log("Reload public key");
+            getPublicKey(username, function(publicKey) {
+
+                // store user's public key locally for later use
+                localStorage.setItem(username, publicKey);
+
+                // loading have finished, enable the input again
+                document.getElementById("input").disabled = false;
+                NProgress.done();
+
+            });
+
+        }
     });
 
     socket.on('offline', function(username) {

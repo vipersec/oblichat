@@ -277,7 +277,6 @@ $(document).ready(function() {
 
             // loading have finished, enable the input again
             document.getElementById("input").disabled = false;
-
             NProgress.done();
         });
 

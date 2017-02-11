@@ -265,52 +265,21 @@ exports.getUserId = function(username, callback) {
 };
 
 /**
- * Function that get's target user's username
- * @callback callback
- * @param {string} id - the user's id
- * @return {error|null, string} error or a string that contains the user's username
- */
-exports.getUsername = function(id, callback) {
-
-	if ( exports.isInvalid(id) )
-		return callback( new Error('Special characters are not allowed') );
-
-	if ( exports.notLengthBetween(24, 24, id) )
-		return callback( new Error('Id must be 24 characters') );
-
-	User.findById(
-		id,
-		{
-			username: 1
-		},
-		function(err, result) {
-
-			if (err){
-				console.log(err);
-			}
-			else {
-				return callback( null, result['username'] );
-			}
-		});
-
-};
-
-/**
  * Function that get's target user's contacts
  * @callback callback
- * @param {string} id - the user'd id
+ * @param {string} username - the user's username
  * @return {error|null, array} error or an array that contains the user's contacts
  */
-exports.getUserContacts = function(id, callback) {
+exports.getUserContacts = function(username, callback) {
 
-	if ( exports.isInvalid(id) )
+	if ( exports.isInvalid(username) )
 		return callback( new Error('Special characters are not allowed') );
 
-	if ( exports.notLengthBetween(24, 24, id) )
-		return callback( new Error('Id must be 24 characters') );
+	if ( exports.notLengthBetween(USER_MIN, USER_MAX, username) )
+		return callback( null, Error('error', 'Username must be between ' + USER_MIN + ' and ' + USER_MAX + ' characters') );
 
-	User.findById(
-		id,
+	User.findOne(
+		{ username: username},
 		{
 			_id: 0,
 			contacts: 1

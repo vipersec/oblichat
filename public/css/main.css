@@ -46,6 +46,9 @@ a.nodec:hover, a.nodec:visited, a.nodec:link, a.nodec:active {
     max-width:400px;
     margin-bottom: 20px;
 }
+.index-content {
+    margin-top: 2%;
+}
 #panel {
     max-width:400px;
 }

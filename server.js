@@ -82,25 +82,21 @@ io.on('connection', function (socket) {
    var authenticated = false;
 
    console.log('A client connected');
-   // socket.request.session.passport.user holds the user's Id
-   var userId = socket.request.session.passport.user;
+   // socket.request.session.passport.user holds the user's username
+   var username = socket.request.session.passport.user;
 
-   if ( userId ) {
+   if ( username ) {
 
       authenticated = true;
 
-      functions.getUsername( userId, function(err, username) {
-         if (!roomCache[username]) {
-            console.log( "Room cache created for user: " + username );
-            roomCache[username] = crypto.createHmac('sha256', SECRET_TOKEN).update( username ).digest('hex');
-         }
+      if (!roomCache[username]) {
+         console.log( "Room cache created for user: " + username );
+         roomCache[username] = crypto.createHmac('sha256', SECRET_TOKEN).update( username ).digest('hex');
+      }
 
-         // join personal notification room
-         socket.join( roomCache[username] );
-         console.log( "Personal room: " + roomCache[username] );
-
-      });
-
+      // join personal notification room
+      socket.join( roomCache[username] );
+      console.log( "Personal room: " + roomCache[username] );
 
    } else {
 
@@ -113,17 +109,13 @@ io.on('connection', function (socket) {
    socket.on('loaded', function() {
       if (authenticated) {
 
-         functions.getUsername( userId, function(err, username) {
+         // emit to our contacts that we are online
+         functions.getUserContacts( username, function(err, contacts) {
+            console.log( "Contacts: " + contacts );
 
-            // emit to our contacts that we are online
-            functions.getUserContacts( userId, function(err, contacts) {
-               console.log( "Contacts: " + contacts );
-
-               // use lupus for non-blocking for loop
-               lupus(0, contacts.length, function(i) {
-                  io.to(roomCache[contacts[i]]).emit('online', username);
-               });
-
+            // use lupus for non-blocking for loop
+            lupus(0, contacts.length, function(i) {
+               io.to(roomCache[contacts[i]]).emit('online', username);
             });
 
          });
@@ -134,48 +126,52 @@ io.on('connection', function (socket) {
    socket.on('disconnect', function() {
       if (authenticated) {
 
-         functions.getUsername( userId, function(err, username) {
+         // if the room doesn't exist it means that there are no sockets attached to it (no open tabs)
+         // which means that we can emit the 'offline' event (user left)
+         if ( !io.nsps["/"].adapter.rooms[roomCache[username]] ) {
 
-            // if the room doesn't exist it means that there are no sockets attached to it (no open tabs)
-            // which means that we can emit the 'offline' event (user left)
-            if ( !io.nsps["/"].adapter.rooms[roomCache[username]] ) {
+            // remove our name from the roomCache
+            delete roomCache[username];
 
-               // remove our name from the roomCache
-               delete roomCache[username];
+            // clear public RSA keys from the server for the given offline user
+            delete publicKeys[username];
 
-               // clear public RSA keys from the server for the given offline user
-               delete publicKeys[username];
+            // emit to our contacts that we are not online
+            functions.getUserContacts( username, function(err, contacts) {
 
-               // emit to our contacts that we are not online
-               functions.getUserContacts( userId, function(err, contacts) {
-
-                  // use lupus for non-blocking for loop
-                  lupus(0, contacts.length, function(i) {
-                     io.to(roomCache[contacts[i]]).emit('offline', username);
-                  });
-
+               // use lupus for non-blocking for loop
+               lupus(0, contacts.length, function(i) {
+                  io.to(roomCache[contacts[i]]).emit('offline', username);
                });
 
-            }
-         });
+            });
+
+         }
 
       }
    });
 
-   socket.on('send', function (message, username) {
+   socket.on('send', function (message, recipient_username) {
       if (authenticated) {
 
          if (message) {
             message = functions.escapeHtml(message);
 
-            // TODO: check if username is in contacts list
-            functions.getUsername( userId, function(err, fromuser) {
-               // notify user that you sent a message using his personal room
-               io.to(roomCache[username]).emit('receive', message, fromuser);
+            functions.getUserContacts( recipient_username, function(err, contacts) {
 
-               // TODO: only for debugging, remove this
-               console.log( "User '" + fromuser + "' sent to user '" + username + "' message: " + message )
+               // check if our username is in their contacts list
+               if ( contacts.indexOf(username) >= 0 ) {
+
+                  // notify user that you sent a message using his personal room
+                  io.to(roomCache[recipient_username]).emit('receive', message, username);
+
+               }
+
             });
+
+            // TODO: only for debugging, remove this
+            console.log( "User '" + username + "' sent to user '" + recipient_username + "' message: " + message )
+
          }
 
       }
@@ -184,16 +180,14 @@ io.on('connection', function (socket) {
    socket.on('check', function () {
       if (authenticated) {
 
-         functions.getUsername( userId, function(err, username) {
-            functions.getUserContacts( userId, function(err, contacts) {
-               // use lupus for non-blocking for loop
-               lupus(0, contacts.length, function(i) {
-                  if (roomCache[contacts[i]]) {
-                     io.to(roomCache[username]).emit('online', contacts[i]);
-                  }
-               });
-
+         functions.getUserContacts( username, function(err, contacts) {
+            // use lupus for non-blocking for loop
+            lupus(0, contacts.length, function(i) {
+               if (roomCache[contacts[i]]) {
+                  io.to(roomCache[username]).emit('online', contacts[i]);
+               }
             });
+
          });
 
       }

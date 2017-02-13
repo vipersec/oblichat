@@ -14,6 +14,12 @@ function socketConnect() {
             console.log("socket connect");
             socket.open(); // start connecting
             showSpinner();
+
+            // generate our private/public RSA key pair
+            setTimeout(function() {
+                generateKeyPair();
+            }, 500);
+
         }
 
     }
@@ -140,6 +146,65 @@ function checkMessages() {
     socketConnect();
 }
 
+/**
+ * Function that checks if a the current tab is focused or not
+ */
+var activeTab = (function(){
+    var stateKey, eventKey, keys = {
+        hidden: "visibilitychange",
+        webkitHidden: "webkitvisibilitychange",
+        mozHidden: "mozvisibilitychange",
+        msHidden: "msvisibilitychange"
+    };
+    for (stateKey in keys) {
+        if (stateKey in document) {
+            eventKey = keys[stateKey];
+            break;
+        }
+    }
+    return function(c) {
+        if (c) document.addEventListener(eventKey, c);
+        return !document[stateKey];
+    }
+})();
+
+activeTab(function(){
+    if ( !activeTab() ) {
+        document.title = "returned";
+    }
+});
+
+/**
+ * Function that plays a sound and changes the title if tab is not focused
+ * @param {string} username - the username of the user who sent the message
+ */
+function newNotification(username) {
+    var audio = new Audio('/sounds/alert.wav');
+    audio.play();
+
+    var visible = activeTab();
+
+    if (!visible) {
+        // and change title
+        var newTitle = $(document).find("title").text() + " --New message from " + username + "-- ";
+        //do not add the same thing again and again
+        if ( document.title != newTitle) {
+            titleScroller(newTitle)
+        }
+    }
+
+}
+
+/**
+ * Function that scrolls the page title
+ */
+function titleScroller(text) {
+    document.title = text;
+    setTimeout(function () {
+        titleScroller(text.substr(1) + text.substr(0, 1));
+    }, 200);
+}
+
 $(document).on('pjax:beforeReplace',   function() {
     // before you navigate away from the page copy all the messages to the messageKeeper to keep them alive
     var messageKeeper = $('#messageKeeper');
@@ -236,7 +301,6 @@ $(document).ready(function() {
         var input = $('#input');
         var inner = $('#inner');
         var selecteduser = $(".selected > .conv_head > .username").val();
-        var audio = new Audio('/sounds/alert.wav');
 
         if (message) {
 
@@ -253,21 +317,20 @@ $(document).ready(function() {
             if ( !content.length) {
                 // keep the (unread) message for later use
                 saveMessage(username, message, 'them');
-                // play sound
-                audio.play();
+                newNotification(username);
             }
             else {
 
                 // if user is not focused to the user that sends the message hide the message and present an alert
-                if (selecteduser != username) {
+                if ( selecteduser != username )  {
                     appendMessage(username, message, 'them', 'hidden');
                     notifyBubble(username);
-                    // play sound
-                    audio.play();
+                    newNotification(username);
                 }
                 else {
                     appendMessage(username, message, 'them');
                     inner.scrollTop(inner[0].scrollHeight); //scrollBottom
+                    newNotification(username);
                 }
 
             }

@@ -244,8 +244,6 @@ $(document).ready(function() {
                 //$('#bottom').animateCss('slideInUp');
             }
 
-            $('#input').focus();
-
             $('.conv_head_highlight').removeClass('selected');
             //highlight the avatar of the person you are talking with
             $($this).addClass('selected');
@@ -277,6 +275,9 @@ $(document).ready(function() {
 
             // loading have finished, enable the input again
             document.getElementById("input").disabled = false;
+
+            $('#input').focus();
+
             NProgress.done();
         });
 
@@ -777,6 +778,5 @@ $(document).ready(function() {
     });
 
     // ====================================================
-
 
 });

@@ -65,7 +65,7 @@ module.exports = function(app, passport) {
 	function renderChat(req, res, results) {
 		// optional parameter results
 
-		var title = "Oblichat | Chat";
+		var title = "Oblichat | Main";
 		var info  = "";		 // no information message is shown
 		var focus = false;   // tab 'requests' is not focused by default
 

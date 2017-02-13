@@ -103,18 +103,6 @@
     <%- include(body) %>
 </div>
 
-
-<script>
-    // generate our private/public RSA key pair
-    setTimeout(function() {
-        generateKeyPair();
-    }, 500);
-
-    // when the page loads check which users are online
-    socket.emit('check');
-</script>
-
-
 </body>
 </html>
 

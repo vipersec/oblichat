@@ -200,3 +200,8 @@
 	<textarea id="input" class="input"></textarea>
 	<div id="send" class="send"></div>
 </div>
+
+<script>
+	// when the page loads check which users are online
+	socket.emit('check');
+</script>

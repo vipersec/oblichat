@@ -142,6 +142,7 @@ span.glyphicon {
     background: #f2f2f2;
     overflow-x: hidden;
     overflow-y: auto;
+    min-width: 460px; /* Minimum width */
 }
 .wrapper .inner .content {
     padding-right: 10px;
@@ -159,9 +160,10 @@ span.glyphicon {
 }
 .bottom .input {
     min-height: 65px;
+    min-width: 250px;
     background: #ffffff;
     border: none;
-    width: calc(100% - 64px);
+    width: calc(100% - 65px);
     position: absolute;
     padding-top: 10px;
     padding-left: 10px;
@@ -286,6 +288,12 @@ span.glyphicon {
     margin-left:20%;
 }
 
+@media (max-width: 900px) {
+    #content, #bottom {
+        margin-left:180px;
+    }
+}
+
 #bottom {
     display: none;
 }
@@ -305,6 +313,7 @@ span.glyphicon {
 #upperbar {
     background-color: white;
     width: 100%;
+    min-width: 350px;
     height: 70px;
     box-shadow: 0 2px 2px -2px gray;
     z-index: 999;
@@ -448,7 +457,7 @@ span.glyphicon {
     color: #7b7de5;
     font-weight: 500;
 }
-@media (max-width: 1000px) {
+@media (max-width: 400px) {
     .main-nav__inner-nav > a:not(.profile-dropdown-trigger):not(.dropdown-trigger--mobile) {
         display: none;
     }
@@ -464,7 +473,7 @@ span.glyphicon {
     top: 1.75rem;
     margin-right: 1.75rem;
 }
-@media (min-width: 1000px) {
+@media (min-width: 400px) {
     .dropdown-trigger--mobile {
         display: none;
     }
@@ -474,7 +483,7 @@ span.glyphicon {
     color: #7b7de5;
 }
 
-@media (min-width: 1000px) {
+@media (min-width: 400px) {
     .mobile-menu-dropdown {
         display: none;
     }
@@ -801,7 +810,6 @@ meter[value="4"]::-moz-meter-bar { background: #76c261; }
     width: 80px;
     height: 80px;
     z-index: 10;
-    left: 20%; /* it will remain in the same position when the wild scroll bar appears */
     background: #f2f2f2;
 
     border-radius: 0 0 100px 0;
@@ -811,6 +819,14 @@ meter[value="4"]::-moz-meter-bar { background: #76c261; }
     -webkit-box-shadow: -1px -1px 5px 4px rgba(0,0,0,0.5);
     -moz-box-shadow: -1px -1px 5px 4px rgba(0,0,0,0.5);
     box-shadow: -1px -1px 5px 4px rgba(0,0,0,0.5);
+
+    -webkit-transform: translateZ(0);
+}
+
+@media (max-width: 900px) {
+    #selecteduser {
+        left: 180px;
+    }
 }
 
 /* End Avatar things */
@@ -1141,7 +1157,7 @@ span.notification {
 .tabs input[name="tab-control"]:nth-of-type(1):checked ~ ul > li:nth-child(1) > label svg {
     fill: #428BFF;
 }
-@media (max-width: 600px) {
+@media (max-width: 900px) {
     .tabs input[name="tab-control"]:nth-of-type(1):checked ~ ul > li:nth-child(1) > label {
         background: rgba(0, 0, 0, 0.08);
     }
@@ -1160,7 +1176,7 @@ span.notification {
 .tabs input[name="tab-control"]:nth-of-type(2):checked ~ ul > li:nth-child(2) > label svg {
     fill: #428BFF;
 }
-@media (max-width: 600px) {
+@media (max-width: 900px) {
     .tabs input[name="tab-control"]:nth-of-type(2):checked ~ ul > li:nth-child(2) > label {
         background: rgba(0, 0, 0, 0.08);
     }
@@ -1207,7 +1223,7 @@ span.notification {
         height: 1.5em;
     }
 }
-@media (max-width: 600px) {
+@media (max-width: 900px) {
     .tabs ul li label {
         padding: 5px;
         border-radius: 5px;
@@ -1222,7 +1238,7 @@ span.notification {
         margin-top: 20px;
     }
     .tabs .tab-content section h2 {
-        display: block;
+        display: none;
     }
 }
 
@@ -1459,13 +1475,21 @@ div.block {
 }
 
 #loader p {
-    margin-top: 26%;
+    margin-top: calc(20% + 100px);
     font-size: 250%;
 }
 
-@media (max-width: 1500px) {
+.spinner {
+    margin-top: 20%;
+}
+
+@media (max-width:950px) {
+    .spinner {
+        margin-top: 30%;
+    }
     #loader p {
-        margin-top: 45%;
+        margin-top: calc(30% + 100px);
+        font-size: 180%;
     }
 }
 

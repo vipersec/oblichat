@@ -168,28 +168,28 @@ var activeTab = (function(){
     }
 })();
 
-activeTab(function(){
-    if ( !activeTab() ) {
-        document.title = "returned";
-    }
-});
-
 /**
  * Function that plays a sound and changes the title if tab is not focused
- * @param {string} username - the username of the user who sent the message
+ * @param {boolean} sound - optional parameter, if set to true the sound will be played
  */
-function newNotification(username) {
+function newNotification(sound) {
+
     var audio = new Audio('/sounds/alert.wav');
-    audio.play();
+
+    sound = sound || false;
+    if (sound) {
+        audio.play();
+    }
 
     var visible = activeTab();
 
     if (!visible) {
         // and change title
-        var newTitle = $(document).find("title").text() + " --New message from " + username + "-- ";
+        var newTitle = pageTitle + " -New message- ";
         //do not add the same thing again and again
         if ( document.title != newTitle) {
-            titleScroller(newTitle)
+            titleScroller(newTitle);
+            audio.play(); // sound will be played anyway if the user is not in this tabs
         }
     }
 
@@ -200,7 +200,8 @@ function newNotification(username) {
  */
 function titleScroller(text) {
     document.title = text;
-    setTimeout(function () {
+    clearTimeout(scroll);
+    scroll = setTimeout(function () {
         titleScroller(text.substr(1) + text.substr(0, 1));
     }, 200);
 }
@@ -219,6 +220,9 @@ $(document).on('pjax:beforeReplace',   function() {
 });
 
 $(document).on('pjax:complete',   function() {
+    // Store page title
+    pageTitle = $(document).find("title").text();
+
     checkMessages()
 });
 
@@ -228,6 +232,9 @@ window.addEventListener('popstate', function(event) {
 }, false);
 
 $(document).ready(function() {
+
+    // Store page title
+    pageTitle = $(document).find("title").text();
 
     socketConnect();
 
@@ -317,7 +324,7 @@ $(document).ready(function() {
             if ( !content.length) {
                 // keep the (unread) message for later use
                 saveMessage(username, message, 'them');
-                newNotification(username);
+                newNotification(true);
             }
             else {
 
@@ -325,12 +332,12 @@ $(document).ready(function() {
                 if ( selecteduser != username )  {
                     appendMessage(username, message, 'them', 'hidden');
                     notifyBubble(username);
-                    newNotification(username);
+                    newNotification(true);
                 }
                 else {
                     appendMessage(username, message, 'them');
                     inner.scrollTop(inner[0].scrollHeight); //scrollBottom
-                    newNotification(username);
+                    newNotification();
                 }
 
             }
@@ -348,6 +355,15 @@ $(document).ready(function() {
         if (key === 13) {
             e.preventDefault();
             sendMessage();
+        }
+    });
+
+    // fires every time the user switches tabs
+    activeTab(function(){
+        // user has returned, change the title back to the original
+        if ( activeTab() ){
+            clearTimeout(scroll);
+            document.title = pageTitle;
         }
     });
 

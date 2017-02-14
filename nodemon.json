@@ -1,4 +1,5 @@
 {
+  "ignore": ["public/*"] ,
   "events": {
     "start": "python generateHash.py",
     "restart": "python generateHash.py",

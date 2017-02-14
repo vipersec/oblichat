@@ -47,10 +47,14 @@ app.use(favicon(__dirname + '/public/images/favicon.ico'));
 // required for passport
 app.use( sessionMiddleware = session({
    secret: SECRET_TOKEN,
-   resave : true,
+   httpOnly: true,
+   //secure: true,
+   //domain: 'oblichat.com',
    saveUninitialized: true,
+   resave : false,
    clear_interval: 900,
-   cookie: { maxAge: 2 * 60 * 60 * 1000 },
+   cookie: { originalMaxAge: 20000 },
+   //cookie: { maxAge: 5 * 24 * 60 * 60 * 1000 }, // 5 days
    store: new MongoStore(configDB)
 }));
 
@@ -58,6 +62,7 @@ io.use(function(socket, next) {
    sessionMiddleware(socket.request, socket.request.res, next);
 });
 
+app.disable('x-powered-by');
 app.use( passport.initialize() );
 app.use( passport.session() ); // persistent login sessions
 app.use( flash() ); // use connect-flash for flash messages stored in session
@@ -82,8 +87,17 @@ io.on('connection', function (socket) {
    var authenticated = false;
 
    console.log('A client connected');
+
+   var username;
+
    // socket.request.session.passport.user holds the user's username
-   var username = socket.request.session.passport.user;
+   if ( socket.request.session.passport ) {
+      username = socket.request.session.passport.user;
+   }
+   else {
+      username = false; // unauthenticated
+      socket.emit('expired');
+   }
 
    if ( username ) {
 

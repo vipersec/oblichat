@@ -17,10 +17,17 @@ module.exports = function(app, passport) {
 
 			var title = "Oblichat | Reclaim Privacy";
 
+			var errormessage = ""; // used for token expiration message so far
+
+			if (req.body.errormessage) {
+				errormessage = req.body.errormessage;
+			}
+
 			if (req.get('X-PJAX')) {
 
 				res.render('bodies/index.ejs', {
 					title	: title,
+					error	: errormessage,
 					message	: req.flash('loginMessage')
 				});
 
@@ -29,8 +36,9 @@ module.exports = function(app, passport) {
 
 				res.render('main_skeleton.ejs', {
 					title	: title,
-					body	: 'bodies/index.ejs',
-					message	: req.flash('loginMessage')
+					error	: errormessage,
+					message	: req.flash('loginMessage'),
+					body	: 'bodies/index.ejs'
 				});
 
 			}
@@ -54,8 +62,8 @@ module.exports = function(app, passport) {
 
 			res.render('main_skeleton.ejs', {
 				title	: title,
-				body	: 'bodies/register.ejs',
-				message	: req.flash('registerMessage')
+				message	: req.flash('registerMessage'),
+				body	: 'bodies/register.ejs'
 			});
 
 		}

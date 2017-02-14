@@ -13,6 +13,12 @@
 		</div>
 	<% } %>
 
+	<% if (error.length > 0) { %>
+		<div class="alert alert-danger">
+			<a class="close">x</a> <%= error %>
+		</div>
+	<% } %>
+
 	<div id="erroralert" class="alert alert-danger" style="margin: 10px auto;"></div>
 
 	<div id="panel" class="panel panel-default col-centered">

@@ -367,4 +367,13 @@ $(document).ready(function() {
         }
     });
 
+    socket.on('expired', function() {
+        $.pjax({
+            container: "#pjax-container",
+            type: 'POST',
+            url: '/',
+            data: { errormessage: "Your session has expired" }
+        });
+    });
+
 });

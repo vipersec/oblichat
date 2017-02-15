@@ -53,7 +53,7 @@ app.use( sessionMiddleware = session({
    saveUninitialized: true,
    resave : false,
    clear_interval: 900,
-   cookie: { originalMaxAge: 20000 },
+   cookie: { originalMaxAge: 7 * 24 * 60 * 60 * 1000 },
    //cookie: { maxAge: 5 * 24 * 60 * 60 * 1000 }, // 5 days
    store: new MongoStore(configDB)
 }));

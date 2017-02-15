@@ -1,6 +1,11 @@
 // we want to initiate a connection after a user is logged in
 var socket = io.connect({ autoConnect: false });
 
+// variables for the title change interval and timeout
+var changeBack;
+var changeTitle;
+var messageCount = 0;
+
 /**
  * Function that initiate a web socket connection to the server if the user has logged in
  */
@@ -184,26 +189,29 @@ function newNotification(sound) {
     var visible = activeTab();
 
     if (!visible) {
-        // and change title
-        var newTitle = pageTitle + " -New message- ";
-        //do not add the same thing again and again
-        if ( document.title != newTitle) {
-            titleScroller(newTitle);
-            audio.play(); // sound will be played anyway if the user is not in this tabs
-        }
+
+        audio.play(); // sound will be played anyway if the user is not in this tabs
+        titleChange();
+
     }
 
 }
 
 /**
- * Function that scrolls the page title
+ * Function that changes the page title to alert user for new messages
  */
-function titleScroller(text) {
-    document.title = text;
-    clearTimeout(scroll);
-    scroll = setTimeout(function () {
-        titleScroller(text.substr(1) + text.substr(0, 1));
-    }, 200);
+function titleChange() {
+
+    clearTimeout(changeBack);
+    clearInterval(changeTitle);
+    messageCount += 1;
+    changeTitle = setInterval(function() {
+        document.title = "(" + messageCount + ") New messages";
+        changeBack = setTimeout(function() {
+            document.title = pageTitle;
+        }, 1000);
+    }, 2000);
+
 }
 
 $(document).on('pjax:beforeReplace',   function() {
@@ -362,7 +370,8 @@ $(document).ready(function() {
     activeTab(function(){
         // user has returned, change the title back to the original
         if ( activeTab() ){
-            clearTimeout(scroll);
+            messageCount = 0;
+            clearInterval(changeTitle);
             document.title = pageTitle;
         }
     });

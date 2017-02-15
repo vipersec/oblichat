@@ -17,6 +17,11 @@ The encryption and the decryption of the messages happens **on the fly** and it'
 ## Installation
 Navigate to oblichat folder after the download and run `npm install`
 
+If you encounter problems during the installation of the module `mmmagic` I suggest you to unistall your current Node.js and install the latest version using this [gist](https://gist.github.com/isaacs/579814).
+
+**Important** <br />
+Don't forget to change the value of the `SECRET_TOKEN` that is located in `server.js`
+
 ## Usage
 Open your browser and navigate to `http://localhost:8080`
 

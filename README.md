@@ -9,10 +9,7 @@ I have implemented **end-to-end encryption** using RSA keys that are generated e
 
 The encryption and the decryption of the messages happens **on the fly** and it's completely transparent to the end user as you can see in the example below (check the console window to see how the messages look like when they pass through the server).
 
-<kbd>
-![demo](https://github.com/vipersec/oblichat/blob/master/demo/demo.gif)
-</kbd>
-
+![demo](demo/demo.gif)
 
 **Oblichat** was made using `Node.js` + `sockets.io` + `pjax`. It is a single-page web application and each page is loaded dynamically using AJAX. Right now it is only a very basic prototype to present you the general idea.
 

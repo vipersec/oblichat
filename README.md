@@ -10,7 +10,7 @@ I have implemented **end-to-end encryption** using RSA keys that are generated e
 The encryption and the decryption of the messages happens **on the fly** and it's completely transparent to the end user as you can see in the example below (check the console window to see how the messages look like when they pass through the server).
 
 <kbd>
-![demo](demo/demo.gif)
+![demo](https://github.com/vipersec/oblichat/blob/master/demo/demo.gif)
 </kbd>
 
 
